@@ -188,5 +188,21 @@ class Exopite_Wc_Ajaxify_Public {
 
     }
 
+    public function quantity_inputs_for_woocommerce_loop_add_to_cart_link( $html, $product ) {
+
+        if ( $product && $product->is_type( 'simple' ) && $product->is_purchasable() && $product->is_in_stock() && ! $product->is_sold_individually() ) {
+
+            $amount_disabled = get_post_meta( $product->id, '_single_without_amount', true );
+            if ( $amount_disabled === 'yes' ) return $html;
+            $html = '<form action="' . esc_url( $product->add_to_cart_url() ) . '" class="cart test" method="post" enctype="multipart/form-data">';
+            $html .= woocommerce_quantity_input( array(), $product, false );
+            $html .= '<button type="submit" data-quantity="5" data-product_id="'. $product->id . '" class="button alt ajax_add_to_cart add_to_cart_button product_type_simple">' . esc_html( $product->add_to_cart_text() ) . '</button>1';
+            $html .= '</form>';
+
+        }
+
+        return $html;
+    }
+
 
 }
