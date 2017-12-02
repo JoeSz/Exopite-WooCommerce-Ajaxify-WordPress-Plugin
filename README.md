@@ -1,4 +1,4 @@
-# Responsive Touch-enabled Jquery Image Lightbox
+# Exopite WooCommerce Ajaxify
 ## Wordpress Plugin
 
 - Author: Joe Szalai
