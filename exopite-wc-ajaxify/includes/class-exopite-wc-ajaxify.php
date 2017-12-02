@@ -171,7 +171,42 @@ class Exopite_Wc_Ajaxify {
 		$plugin_public = new Exopite_Wc_Ajaxify_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts', 99 );
+
+        /*
+        Plugin Name: Woocommerce Add to cart Ajax for variable products
+        Plugin URI: http://www.rcreators.com/woocommerce-ajax-add-to-cart-variable-products
+        Description: Ajax based add to cart for varialbe products in woocommerce.
+        Author: Rishi Mehta - Rcreators Websolutions
+        Version: 1.2.9
+        Author URI: http://rcreators.com
+        */
+        $this->loader->add_filter( 'woocommerce_get_sections_products', $plugin_public, 'add_to_cart_variable_add_section' );
+        $this->loader->add_filter( 'woocommerce_get_settings_products', $plugin_public, 'add_to_cart_variable_all_settings', 10, 2 );
+        $this->loader->add_filter( 'wp_ajax_woocommerce_add_to_cart_variable_rc', $plugin_public, 'add_to_cart_variable_rc_callback' );
+        $this->loader->add_filter( 'wp_ajax_nopriv_woocommerce_add_to_cart_variable_rc', $plugin_public, 'add_to_cart_variable_rc_callback' );
+
+        /**
+         * WooCommerce - Show quantity inputs for simple products within loops.
+         *
+         * @link https://gist.github.com/mikejolley/2793710
+         */
+        $this->loader->add_filter( 'woocommerce_loop_add_to_cart_link', $plugin_public, 'quantity_inputs_for_woocommerce_loop_add_to_cart_link', 10, 2 );
+
+        /*
+         * Custom field
+         *
+         * Tutorial:
+         * https://www.proy.info/how-to-add-woocommerce-custom-fields/
+         * http://www.remicorson.com/mastering-woocommerce-products-custom-fields/
+         */
+        $this->loader->add_filter( 'woocommerce_product_options_advanced', $plugin_public, 'add_custom_general_fields' );
+        $this->loader->add_filter( 'woocommerce_process_product_meta', $plugin_public, 'add_custom_general_fields_save' );
+
+        //$this->loader->add_filter( 'woocommerce_loop_add_to_cart_link', $plugin_public, 'woo_archive_page_cart_button_custom_class', 99, 2 );
+        $this->loader->add_filter( 'woocommerce_product_add_to_cart_text', $plugin_public, 'woo_archive_page_cart_button_custom_text', 99 );
+
+
 
 	}
 
