@@ -204,5 +204,29 @@ class Exopite_Wc_Ajaxify_Public {
         return $html;
     }
 
+    public function add_custom_general_fields() {
+
+        global $woocommerce, $post;
+
+        echo '<div class="options_group">';
+
+        woocommerce_wp_checkbox( array(
+            'id'            => '_single_without_amount',
+            'wrapper_class' => 'without-amount',
+            'label'         => __('Without Amount', 'exopite' ),
+            'description'   => __( 'Do not display "add to cart amount" on single product in shop page.', 'exopite' )
+        ));
+
+        echo '</div>';
+
+    }
+
+    public function add_custom_general_fields_save( $post_id ) {
+
+        // Checkbox
+        $woocommerce_checkbox = isset( $_POST['_single_without_amount'] ) ? 'yes' : 'no';
+        update_post_meta( $post_id, '_single_without_amount', $woocommerce_checkbox );
+
+    }
 
 }
